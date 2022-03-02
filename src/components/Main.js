@@ -219,7 +219,7 @@ text-align:left;
 `
 
 const SharedImg = styled.div`
-margin:8px 16px 0;
+margin-top:8px;
   background-color: #f9fafb;
   img{
     width: 100%;

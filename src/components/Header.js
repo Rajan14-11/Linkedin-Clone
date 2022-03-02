@@ -1,24 +1,26 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import { signOutApi } from "../actions";
 
-function Header() {
-    return (
-        <Container>
-            <Content>
-                <Logo>
-                    <a href='/home'>
-                        <img src='/images/home-logo.svg'/>
-                    </a>
-                </Logo>
-                <Search>
-                    <div>
-                        <input type="text" placeholder='Search'/>
-                    </div>
-                    <SearchIcon>
-                        <img src='/images/search-icon.svg'/>
-                    </SearchIcon>
-                </Search>
-                 <Nav>
+function Header(props) {
+  return (
+    <Container>
+      <Content>
+        <Logo>
+          <a href="/home">
+            <img src="/images/home-logo.svg" />
+          </a>
+        </Logo>
+        <Search>
+          <div>
+            <input type="text" placeholder="Search" />
+          </div>
+          <SearchIcon>
+            <img src="/images/search-icon.svg" />
+          </SearchIcon>
+        </Search>
+        <Nav>
           <NavListWrap>
             <NavList className="active">
               <a>
@@ -56,62 +58,58 @@ function Header() {
             </NavList>
 
             <User>
-                <a>
-                    <img src='/images/user.svg'/>
-                    <span>Me
-
-                    <img src='/images/down-icon.svg'/>
-                    </span>
-                </a>
-            <SignOut>
-               Sign Out
-            </SignOut>
+              <a>
+                {props.user && props.user.photoURL ? (<img src={props.user.photoURL}/>):(<img src="/images/user.svg" />)}
+                <span>
+                  Me
+                  <img src="/images/down-icon.svg" />
+                </span>
+              </a>
+              <SignOut onClick={()=>props.signOut()}>
+                Sign Out
+                </SignOut>
             </User>
 
             <Work>
-                <a>
-                    <img src='/images/nav-work.svg'/>
-                    <span>Work
-                    <img src="/images/down-icon.svg"></img>
-
-                    </span>
-                </a>
+              <a>
+                <img src="/images/nav-work.svg" />
+                <span>
+                  Work
+                  <img src="/images/down-icon.svg"></img>
+                </span>
+              </a>
             </Work>
-
-            </NavListWrap>
-            </Nav>
-            </Content>
-
-        </Container>
-
-    )
+          </NavListWrap>
+        </Nav>
+      </Content>
+    </Container>
+  );
 }
 
 const Container = styled.div`
   background-color: white;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  left:0;
-  padding:0 24px;
+  left: 0;
+  padding: 0 24px;
   position: fixed;
   top: 0;
-  width:100vw;
+  width: 100vw;
   z-index: 100;
 `;
 
 const Content = styled.div`
-display:flex;
-align-items: center;
-justify-content: flex-start;
-margin: 0 auto;
-min-height: 100%;
-max-width: 1128px;
-` 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 0 auto;
+  min-height: 100%;
+  max-width: 1128px;
+`;
 
 const Logo = styled.div`
-margin-right: 8px;
-font-size: 0px;
-
-`
+  margin-right: 8px;
+  font-size: 0px;
+`;
 
 const Search = styled.div`
   position: relative;
@@ -123,11 +121,11 @@ const Search = styled.div`
 
     input {
       background-color: #eef3f8;
-      border:none;
+      border: none;
       border-radius: 4px;
       box-shadow: none;
-      color:rgba(0,0,0,0.9);
-      width:218px;
+      color: rgba(0, 0, 0, 0.9);
+      width: 218px;
       padding: 0 8px 0 40px;
       line-height: 1.75;
       font-weight: 400;
@@ -135,7 +133,6 @@ const Search = styled.div`
       height: 34px;
       border-color: #dce6f1;
       vertical-align: text-top;
-
     }
   }
 `;
@@ -153,18 +150,17 @@ const SearchIcon = styled.div`
   justify-content: center;
 `;
 const Nav = styled.nav`
-display: block;
-margin-left: auto;
+  display: block;
+  margin-left: auto;
 
-@media (max-width:768px){
+  @media (max-width: 768px) {
     position: fixed;
     bottom: 0;
-    left:0;
+    left: 0;
     background: white;
     width: 100%;
-}
-
-`
+  }
+`;
 
 const NavListWrap = styled.ul`
   display: flex;
@@ -184,15 +180,13 @@ const NavListWrap = styled.ul`
       width: 100%;
       border-color: rgba(0, 0, 0, 0.9);
     }
-
   }
 `;
-
 
 const NavList = styled.li`
   display: flex;
   align-items: center;
-   a {
+  a {
     align-items: center;
     background: transparent;
     display: flex;
@@ -216,62 +210,73 @@ const NavList = styled.li`
     }
   }
 
-  &:hover, &:active{
-      a{
-          span{
-              color: rgba(0, 0, 0, 0.9);
-              cursor:pointer;
-          }
+  &:hover,
+  &:active {
+    a {
+      span {
+        color: rgba(0, 0, 0, 0.9);
+        cursor: pointer;
       }
+    }
   }
 `;
 
 const SignOut = styled.div`
+  position: absolute;
+  top: 45px;
+  background: white;
+  border-radius: 0 0 5px 5px;
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  transition-duration: 167ms;
+  text-align: center;
+  display: none;
+  cursor: pointer;
 
-position:absolute;
-top:45px;
-background: white;
-border-radius: 0 0 5px 5px;
-width: 100px;height:40px;
-font-size:16px;
-transition-duration: 167ms;
-text-align: center;
-display:none;
-cursor: pointer;
-
-@media(max-width:768px){
-    top:-42px;
-}
+  @media (max-width: 768px) {
+    top: -42px;
+  }
 `;
 
 const User = styled(NavList)`
-
-  a>svg{
-      width:24px;
-      border-radius: 50%;
+  a > svg {
+    width: 24px;
+    border-radius: 50%;
   }
 
-  a>img{
-      width:24px;
-      height: 24px;
-      border-radius: 50%;
+  a > img {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
   }
 
-  span{
-      display:flex;
+  span {
+    display: flex;
+    align-items: center;
+  }
+
+  &:hover {
+    ${SignOut} {
       align-items: center;
+      display: flex;
+      justify-content: center;
+    }
   }
-
-  &:hover{
-      ${SignOut}{
-          align-items:center;
-          display: flex;
-          justify-content: center;
-      }
-  }
-`
+`;
 const Work = styled(User)`
   border-left: 1px solid rgba(0, 0, 0, 0.08);
 `;
-export default Header;
+
+const mapStateToProps = (state)=>{
+  return{
+    user:state.userState.user,
+  };
+}
+
+const mapDispatchToProps = (dispatch)=>({
+ signOut:()=>dispatch(signOutApi())
+});
+export default connect( mapStateToProps, mapDispatchToProps)(Header);
+
 

@@ -3,9 +3,17 @@ import styled from 'styled-components';
 import Leftside from "./Leftside"
 import Main from "./Main"
 import Rightside from "./Rightside"
-function Home() {
-    return (
-      <Container>
+import { Navigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { signOutApi } from '../actions';
+function Home(props) {
+
+  return (
+    <Container>
+        {!props.user && 
+        <Navigate to="/">
+          </Navigate>
+          }
         <Section>
           <h5>
             <a>Hiring in a hurry?</a>
@@ -73,4 +81,13 @@ margin: 25px 0;
     padding:0px 5px;
 }
 `
-export default Home
+const mapStateToProps = (state)=>{
+  return{
+    user:state.userState.user,
+  };
+}
+
+const mapDispatchToProps = (dispatch)=>({
+ signOut:()=>dispatch(signOutApi())
+});
+export default connect( mapStateToProps, mapDispatchToProps)(Home);
