@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ReactPlayer from "react-player";
 import {connect} from "react-redux"
-import { Firestore } from "firebase/firestore";
+import {serverTimestamp, Timestamp } from "firebase/firestore";
 import { postArticleApi } from "../actions";
 function Postmodal(props) {
   const [EditorText, setEditorText] = useState("");
@@ -24,7 +24,7 @@ function Postmodal(props) {
       alert(`Not an image.This file is: ${typeof imageFile}`);
       return;
     } else {
-      setImageFile(URL.createObjectURL(image));
+      setImageFile(image);
     }
   }
 
@@ -37,16 +37,14 @@ function Postmodal(props) {
   const postArticle = (e)=>{
       e.preventDefault()
       if(e.target !== e.currentTarget){
-          console.log("hello")
           return;
       }
-
       const payload={
           image:imageFile,
           video:videoFile,
           user:props.user,
           description:EditorText,
-        //   timestamp:Firestore.timestamp.now()
+          timestamp : new Date().toLocaleString()
       }
 
       props.postArticle(payload);
@@ -102,7 +100,7 @@ function Postmodal(props) {
                         Select an image to share
                       </label>
                     </p>
-                    {imageFile && <img src={imageFile} alt="" />}
+                    {imageFile && <img src={URL.createObjectURL(imageFile)} alt="" />}
                   </UploadImage>
                 ) : (
                     assetArea==="media" &&
